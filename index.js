@@ -19,6 +19,20 @@ var insertDocuments = function (db, callback){
 	})
 }
 
+
+var findDocuments = function (db, callback) {
+	// Get documents collection
+	var collection = db.collection('documents');
+
+	// Find some documents
+	collection.find({}).toArray(function (err, docs) {
+		assert.equal(err, null);
+		console.log('Found following records')
+		console.log(docs);
+		callback(docs);
+	})
+}
+
 // Using connect method to connect to mongo server
 MongoClient.connect(url, function (err, db) {
 	assert.equal(null, err);
@@ -28,7 +42,14 @@ MongoClient.connect(url, function (err, db) {
 
 	if(db) {
 		console.log('Connected Successfully to server');
-		insertDocuments(db, function () {
+
+		// Call insert documents
+		// insertDocuments(db, function () {
+		// 	db.close();
+		// });
+
+		// Find some documents
+		findDocuments(db, function () {
 			db.close();
 		})
 	}
