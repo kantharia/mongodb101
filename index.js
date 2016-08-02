@@ -46,6 +46,19 @@ var updateDocument = function (db, callback) {
 	})
 }
 
+
+// Remove Document
+var removeDocument = function (db, callback) {
+	var collection = db.collection('documents');
+
+	collection.deleteOne({a:3}, function (err, result) {
+		assert.equal(null, err);
+		assert.equal(1, result.result.n);
+		console.log('Removed the document with the field a equal to 3.');
+		callback(result);
+	})
+}
+
 // Using connect method to connect to mongo server
 MongoClient.connect(url, function (err, db) {
 	assert.equal(null, err);
@@ -67,7 +80,12 @@ MongoClient.connect(url, function (err, db) {
 		// });
 
 		// Update document
-		updateDocument(db, function () {
+		// updateDocument(db, function () {
+		// 	db.close();
+		// });
+
+		// Remove document
+		removeDocument(db, function () {
 			db.close();
 		})
 	}
