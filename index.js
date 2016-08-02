@@ -19,7 +19,7 @@ var insertDocuments = function (db, callback){
 	})
 }
 
-
+// Find documents
 var findDocuments = function (db, callback) {
 	// Get documents collection
 	var collection = db.collection('documents');
@@ -30,6 +30,19 @@ var findDocuments = function (db, callback) {
 		console.log('Found following records')
 		console.log(docs);
 		callback(docs);
+	})
+}
+
+// Update Document
+var updateDocument = function (db, callback) {
+	// Get document collection
+	var collection = db.collection('documents');
+
+	collection.updateOne({a:2}, { $set : {b:1} }, function (err, result) {
+		assert.equal(null, err);
+		assert.equal(1, result.result.n)
+		console.log('Updated the document with the field a equal to 2.');
+		callback(result);
 	})
 }
 
@@ -49,7 +62,12 @@ MongoClient.connect(url, function (err, db) {
 		// });
 
 		// Find some documents
-		findDocuments(db, function () {
+		// findDocuments(db, function () {
+		// 	db.close();
+		// });
+
+		// Update document
+		updateDocument(db, function () {
 			db.close();
 		})
 	}
